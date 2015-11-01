@@ -1,3 +1,14 @@
+# Ignore any backup files.
+*~
+*.bak
+*.old
+
+# Ignore kate swap files
+*.kate-swp
+
+# Ignore any build directories
+build*
+
 # Compiled Object files
 *.slo
 *.lo
@@ -26,3 +37,5 @@
 *.exe
 *.out
 *.app
+
+
