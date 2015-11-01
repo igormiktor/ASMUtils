@@ -1,19 +1,27 @@
 /*
     divU16by16 - Division routine written in assembler
-    Copyright (c) 2015 Igor Mikolic-Torreira.  All right reserved.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    The MIT License (MIT)
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    Copyright (c) 2015 Igor Mikolic-Torreira
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
 */
 
 
@@ -28,8 +36,8 @@
 
 divU16by16:
 
-; Divides a 16-bit-number by a 8-bit-number
-; Divide r25:r24 by r22
+; Divide a 16-bit number by a 16-bit number
+; Divide r25:r24 by r23:r22, return result in r25:r24
 
 ; Registers
 ; r24   LSB 16-bit dividend & 16-bit result
@@ -45,6 +53,17 @@ divU16by16:
 #define rTmpH       r27
 #define rCntr       r21
 
+#if C_COMPAT_ASM_CODE
+
+    ; uint16_t divU8by8( uint16_t dividend, uint16_t divisor )
+    ; dividend -> r25:r24
+    ; divisor -> r23:r22
+    ; return -> r25:r24
+
+    ; Nothing to do; all registers are call-used
+
+#endif
+
     clr rTmpL
     clr rTmpH
     ldi rCntr, 17
@@ -56,6 +75,7 @@ divU16by16:
     cp  rTmpL, rDvsrL
     cpc rTmpH, rDvsrH
     brcs 2f
+
     sub rTmpL, rDvsrL
     sbc rTmpH, rDvsrH
 
@@ -64,6 +84,8 @@ divU16by16:
     rol rDvdndH
     dec rCntr
     brne 1b
+
     com rDvdndL
     com rDvdndH
+
     ret
