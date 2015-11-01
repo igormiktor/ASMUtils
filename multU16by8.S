@@ -1,5 +1,5 @@
 /*
-    multU16by8.h - Multiplication routine written in assembler
+    multU16by8 - Multiplication routine written in assembler
 
     The MIT License (MIT)
 
