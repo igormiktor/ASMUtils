@@ -27,10 +27,10 @@ requiring extra instructions to move the result into the appropriate registers).
 I originally coded this feature to facilitate testing (it's much easier to drive tests using a test harness
 written in C), but it has proven useful enough to retain as a standard feature of this collection.
 
-Documentation on this collection is provided directly as comments in the various files.  The routines are not
+Documentation is provided directly as comments in the various files.  The routines are not
 always written in the most general way (e.g., the USART0 routines are hard coded for serial communications at
 115,200 baud, 8-bits, no parity, 1 stop bit).  The contents of the
-collection is driven entirely by the needs of the various AVR projects I work on in my spare time.  It will
+collection are driven entirely by the needs of the various AVR projects I work on in my spare time.  It will
 grow and evolve over time driven by those needs and my interests, which may resemble a random walk. If you
 have a particular need, let me know and I will do what I can.
 
