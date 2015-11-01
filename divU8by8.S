@@ -36,8 +36,8 @@
 
 divU8by8:
 
-; Divides a 8-bit number by an 8-bit number
-; Divides r24 by r22, returns results in r24
+; Divide a 8-bit number by an 8-bit number
+; Divide r24 by r22, return result in r24
 
 ; Registers
 ; r24   8-bit dividend & 8-bit result
