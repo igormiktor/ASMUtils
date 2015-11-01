@@ -19,8 +19,11 @@ purpose.  This feature, when activated, may introduce overhead into some of the 
 usually in the form of preserving registers by pushing and popping.  This inefficiency only affects a few
 of the routines because I wrote routines to be compatible with the GCC calling conventions and
 register usage rules whenever I could do so without introducing inefficiencies, (e.g., `divU8by8.S`
-is compatible with C as written).  Only a few routines cannot be written to be compatible "out of the box"
-(e.g., `multU16by8.S` because it uses the `mult` instruction which trashes register `r1`).
+is compatible with C as written).  Only a few routines cannot be written to be compatible "out of the box".  This
+was generally either because the routines could not avoid trashing a register that GCC calling conventions required
+them to preserve (e.g., `multU16by8.S` uses the `mult` instruction which trashes register `r1`), or
+because return values could not be constructed in place in the registers required by the GCC conventions (thus
+requiring extra instructions to move the result into the appropriate registers).
 I originally coded this feature to facilitate testing (it's much easier to drive tests using a test harness
 written in C), but it has proven useful enough to retain as a standard feature of this collection.
 
