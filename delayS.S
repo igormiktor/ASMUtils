@@ -103,12 +103,12 @@ delayTenthsOfSeconds:
     ; Done with inner loop
 
     ; Decrement and test outer loop
-    subi rOuter, 1
+    dec rOuter
     brne 2b
     ; Done with inner loop
 
     ; Decrement and test tenth-of-second loop
-    subi r10ths, 1
+    dec r10ths
     brne 1b
     ; Done with the requested number of tenths-of-seconds
 

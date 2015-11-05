@@ -111,12 +111,12 @@ delayWholeMilliSeconds:
     ; Done with inner loop
 
     ; Decrement and test outer loop
-    subi rOuter, 1
+    dec rOuter
     brne 2b
     ; Done with inner loop
 
     ; Decrement and test millisecond loop
-    subi rMillis, 1
+    dec rMillis
     brne 1b
     ; Done with the requested number of milliseconds
 
