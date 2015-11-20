@@ -113,6 +113,7 @@ stabilizeA2D:
 
     ; Prime the A2D system by forcing a read
     ; Start A2D conversion
+    ldi ZH, hi8( ADCSRA )
     ldi ZL, lo8( ADCSRA )
     ld rTmp, Z
     ori rTmp, _BV(ADSC)
