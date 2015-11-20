@@ -39,6 +39,8 @@ void enableA2D();
 
 void setA2Dchannel( uint8_t channel );
 
+void stabilizeA2D();
+
 uint16_t readA2D();
 
 #ifdef __cplusplus

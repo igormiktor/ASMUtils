@@ -40,6 +40,8 @@ enableA2D:
 ; r30 = ZL
 ; r31 = ZH
 ; Z = addressing for A2D ports
+; r30 = delay counter LSB
+; r31 = delay coutner MSB
 
 #define rTmp        r24
 
@@ -77,6 +79,64 @@ enableA2D:
 
 
 
+;***************************************************************
+
+.global stabilizeA2D
+
+stabilizeA2D:
+
+; r24 = channel to set; temporary
+; r30 = ZL
+; r31 = ZH
+; Z = addressing for A2D ports
+
+#define rCntrL      r24
+#define rCntrH      r25
+#define rTmp        r24
+
+#if C_COMPAT_ASM_CODE
+
+    ; void stabilizeA2D();
+
+    ; Nothing to do; all registers are call-used
+
+#endif
+
+
+    ; Delay about 125 usec for hardware to stabilize
+    ; 2000 cycles at 16 MHz (a bit short, but there is also call overhead
+    ldi rCntrL, 0xF3
+    ldi rCntrH, 0x01
+1:
+    sbiw rCntrL, 1                  ; 2 cycles
+    brne 1b                         ; 1 cycle on exit, 2 cycles on loop
+
+    ; Prime the A2D system by forcing a read
+    ; Start A2D conversion
+    ldi ZL, lo8( ADCSRA )
+    ld rTmp, Z
+    ori rTmp, _BV(ADSC)
+    st Z, rTmp
+
+    ; ADSC is cleared when the conversion finishes
+2:
+    ld rTmp, Z
+    sbrc rTmp, ADSC
+    rjmp 2b                         ; loop until transmit complete
+
+    ; Need to read ADCH to complete the process
+    ldi ZL, lo8( ADCH )
+    ld rTmp, Z
+
+    ret
+
+#undef rCntrL
+#undef rCntrH
+#undef rTmp
+
+
+
+
 
 ;***************************************************************
 
@@ -90,7 +150,6 @@ setA2Dchannel:
 ; Z = addressing for A2D ports
 
 #define rChannel    r24
-#define rTmp        r25
 #define rADCSRA     r25
 #define rADCSRB     r25
 #define rADMUX      r25
@@ -141,29 +200,9 @@ setA2Dchannel:
     or rADMUX, rChannel
     st Z, rADMUX
 
-
-    ; Prime the A2D system by forcing a read
-
-    ; Start A2D conversion
-    ldi ZL, lo8( ADCSRA )
-    ld rADCSRA, Z
-    ori rADCSRA, _BV(ADSC)
-    st Z, rADCSRA
-
-    ; ADSC is cleared when the conversion finishes
-3:
-    ld rADCSRA, Z
-    sbrc rADCSRA, ADSC
-    rjmp 3b                         ; loop until transmit complete
-
-    ; Need to read ADCH to complete the process
-    ldi ZL, lo8( ADCH )
-    ld rTmp, Z
-
     ret
 
 #undef rChannel
-#undef rTmp
 #undef rADCSRA
 #undef rADCSRB
 #undef rADMUX
