@@ -110,7 +110,7 @@ sendUSART0:
     sbrs rTmp, UDRE0                ; Wait for an empty transmit buffer (bit gets set when empty)
     rjmp 1b
 
-    ldi ZL, lo8(UDR0)
+    ldi ZL, lo8( UDR0 )
     st Z, rByteToSend               ; transmit byte
 
     ret
