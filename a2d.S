@@ -40,8 +40,6 @@ enableA2D:
 ; r30 = ZL
 ; r31 = ZH
 ; Z = addressing for A2D ports
-; r30 = delay counter LSB
-; r31 = delay coutner MSB
 
 #define rTmp        r24
 
@@ -85,14 +83,16 @@ enableA2D:
 
 stabilizeA2D:
 
-; r24 = channel to set; temporary
+; r24 = delay counter LSB; temporarily hold port values
+; r25 = delay coutner MSB
 ; r30 = ZL
 ; r31 = ZH
 ; Z = addressing for A2D ports
 
 #define rCntrL      r24
 #define rCntrH      r25
-#define rTmp        r24
+#define rADCSRA     r24
+#define rNotUsed    r24
 
 #if C_COMPAT_ASM_CODE
 
@@ -115,25 +115,26 @@ stabilizeA2D:
     ; Start A2D conversion
     ldi ZH, hi8( ADCSRA )
     ldi ZL, lo8( ADCSRA )
-    ld rTmp, Z
-    ori rTmp, _BV(ADSC)
-    st Z, rTmp
+    ld rADCSRA, Z
+    ori rADCSRA, _BV(ADSC)
+    st Z, rADCSRA
 
     ; ADSC is cleared when the conversion finishes
 2:
-    ld rTmp, Z
-    sbrc rTmp, ADSC
+    ld rADCSRA, Z
+    sbrc rADCSRA, ADSC
     rjmp 2b                         ; loop until transmit complete
 
     ; Need to read ADCH to complete the process
     ldi ZL, lo8( ADCH )
-    ld rTmp, Z
+    ld rNotUsed, Z
 
     ret
 
 #undef rCntrL
 #undef rCntrH
-#undef rTmp
+#undef rADCSRA
+#undef rNotUsed
 
 
 
@@ -146,12 +147,12 @@ stabilizeA2D:
 setA2Dchannel:
 
 ; r24 = channel to set
+; r25 = temporarily holds various port values
 ; r30 = ZL
 ; r31 = ZH
 ; Z = addressing for A2D ports
 
 #define rChannel    r24
-#define rADCSRA     r25
 #define rADCSRB     r25
 #define rADMUX      r25
 
@@ -204,7 +205,6 @@ setA2Dchannel:
     ret
 
 #undef rChannel
-#undef rADCSRA
 #undef rADCSRB
 #undef rADMUX
 
@@ -225,7 +225,7 @@ readA2D:
 ; r31 = ZH
 ; Z = addressing for A2D ports
 
-#define rTmp        r24
+#define rADCSRA     r24
 #define rRetL       r24
 #define rRetH       r25
 
@@ -241,14 +241,17 @@ readA2D:
 
     ; Start A2D conversion
     ldi ZL, lo8( ADCSRA )
-    ld rTmp, Z
-    ori rTmp, _BV(ADSC)
-    st Z, rTmp
+    ld rADCSRA, Z
+    ori rADCSRA, _BV(ADSC)
+    st Z, rADCSRA
+
+    ; One NOP generally suffices to complete the read
+    nop
 
     ; ADSC is cleared when the conversion finishes
 1:
-    ld rTmp, Z
-    sbrc rTmp, ADSC
+    ld rADCSRA, Z
+    sbrc rADCSRA, ADSC
     rjmp 1b                         ; loop until transmit complete
 
     ; Get the result
@@ -261,6 +264,6 @@ readA2D:
 
     ret
 
-#undef rTmp
+#undef rADCSRA
 #undef rRetL
 #undef rRetH
