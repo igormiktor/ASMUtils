@@ -72,3 +72,5 @@ enableSPI:
     sbi _SFR_IO_ADDR( DDRB ), DDB3
 
     ret
+
+#undef rTmp
