@@ -38,10 +38,10 @@ enableUSART0:
 
 ; Enable USART0 at 115200 baud, 8 bits, no parity, 1 stop bit.
 
-; r24 = temporary
+; r24 = temporary (various port values)
 ; r30 = ZL
 ; r31 = ZH
-; Z = addressing for A2D ports
+; Z = addressing for USART0 ports
 
 #define rTmp        r24
 
