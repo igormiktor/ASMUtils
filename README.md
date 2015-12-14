@@ -1,8 +1,9 @@
 # ASMUtils
 
 This is a collection of assembler routines that provide commonly needed functionality
-for programming in assembler.  These routines are designed for the AVR ATmega328 and ATmega2560 8-bit
-microcontrollers.  I put this together because I didn't find a convenient location with a good set
+for programming AVR microcontrollers in assembler.  These routines are designed for the
+AVR ATmega328 and ATmega2560 8-bit microcontrollers (commonly available on the Arduino Uno and
+Arduino Mega).  I put this together because I didn't find a convenient location with a good set
 of compile-ready routines.
 
 These routines are written for the AVR-GCC assembler (`avr-as`) and follow its conventions (which are
