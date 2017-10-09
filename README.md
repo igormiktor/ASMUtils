@@ -10,11 +10,11 @@ These routines are written for the AVR-GCC assembler (`avr-as`) and follow its c
 different in small but significant ways from the Atmel assembler conventions).  In particular, the routines
 in the ASMUtils collection are coded as `*.S` files and make liberal use of the GCC preprocessor.  More
 information on the AVR-GCC assembler can be found in the
-[AVR Libc User Manual] (http://www.nongnu.org/avr-libc/user-manual/pages.html).
+[AVR Libc User Manual](http://www.nongnu.org/avr-libc/user-manual/pages.html).
 
 A perhaps unique feature of this collection is that by setting the preprocessor symbol `C_COMPAT_ASM_CODE` to
 a non-zero value at compile time, all the ASMUtils routines will follow the
-[GCC register usage and calling conventions] (http://www.nongnu.org/avr-libc/user-manual/FAQ.html#faq_reg_usage),
+[GCC register usage and calling conventions](http://www.nongnu.org/avr-libc/user-manual/FAQ.html#faq_reg_usage),
 which means they can be called from C or C++ code.  Suitable header files are included in the collection for this
 purpose.  This feature, when activated, may introduce overhead into some of the routines,
 usually in the form of preserving registers by pushing and popping.  This inefficiency only affects a few
