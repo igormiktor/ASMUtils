@@ -89,6 +89,9 @@ sendUSART0:
 
 ; r24 = byte to send
 ; r25 = temporary
+; r30 = ZL
+; r31 = ZH
+; Z = addressing for USART0 ports
 
 #define rByteToSend         r24
 #define rTmp                r25
